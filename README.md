@@ -28,3 +28,8 @@ let server_opts = GRPCServerOptions(
 let server = GRPCServer(server_opts)
 try await server.Run([provider])
 ```
+
+## See also
+
+* https://github.com/grpc/grpc-swift
+* https://github.com/apple/swift-log
