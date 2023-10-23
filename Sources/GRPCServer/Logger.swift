@@ -11,7 +11,7 @@ import GRPC
 // https://github.com/apple/swift-log/pull/218
 
 @available(macOS 10.15, *)
-class GRPCServerLogger: @unchecked Sendable {
+public class GRPCServerLogger: @unchecked Sendable {
     internal var logger: Logger
     
     internal init(logger: Logger){
