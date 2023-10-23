@@ -33,7 +33,7 @@ try await server.Run([provider])
 
 For reasons I don't understand by the time user-defined code get invoked by `grpc-swift` it is no longer guaranteed that the client remote address will be in the message headers.
 
-This can be addressed through the use an ["I"nterceptor"](https://github.com/grpc/grpc-swift/blob/main/docs/interceptors-tutorial.md) to capture the remote address from the `ServerInterceptorContext` and assigning that value to a `Logger` metadata. For example, something like this:
+This can be addressed through the use an ["Interceptor"](https://github.com/grpc/grpc-swift/blob/main/docs/interceptors-tutorial.md) to capture the remote address from the `ServerInterceptorContext` and assigning that value to a `Logger` metadata. For example, something like this:
 
 ```
 final class TextEmbosserServerInterceptorFactory: EmbosserServerInterceptorFactoryProtocol {
@@ -84,7 +84,7 @@ However, the problem is that this means `Logger` needs to be mutable but Swift g
 
 To address this a `GRPCServerLogger` class is available that wraps an user-defined `Logging` instance, conforms to the `Logging` protocol and is marked as `@unchecked Sendable` to silence compiler errors.
 
-_ I thought I read that `swift-log` was made to play nice with Sendable but I can't get it to work so all of this may be a misunderstanding on my part. I would love to remove the `GRPCServerLogger` class entirely if possible._
+_I thought I read that `swift-log` was made to play nice with Sendable but I can't get it to work so all of this may be a misunderstanding on my part. I would love to remove the `GRPCServerLogger` class entirely if possible._
  
 Here's how you might use `GRPCServerLogger` in your code:
 
