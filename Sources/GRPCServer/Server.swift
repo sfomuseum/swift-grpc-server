@@ -5,7 +5,6 @@ import NIOPosix
 import NIOSSL
 import Logging
 import Foundation
-import Puppy
 
 @available(macOS 14.0, iOS 17.0, tvOS 17.0, *)
 public class GRPCServer {
