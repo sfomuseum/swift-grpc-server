@@ -14,11 +14,11 @@ import GRPC
 public class GRPCServerLogger: @unchecked Sendable {
     internal var logger: Logger
     
-    internal init(logger: Logger){
+    public init(logger: Logger){
         self.logger = logger
     }
     
-    internal func setRemoteAddress(context: GRPC.GRPCAsyncServerCallContext) {
+    public func setRemoteAddress(context: GRPC.GRPCAsyncServerCallContext) {
         
         var remote_addr = "unknown"
         
@@ -31,31 +31,31 @@ public class GRPCServerLogger: @unchecked Sendable {
         self.logger[metadataKey: "remote-address"] = "\(remote_addr)"
     }
     
-    internal func trace(_ message: Logger.Message){
+    public func trace(_ message: Logger.Message){
         self.logger.trace(message)
     }
     
-    internal func debug(_ message: Logger.Message){
+    public func debug(_ message: Logger.Message){
         self.logger.debug(message)
     }
 
-    internal func info(_ message: Logger.Message){
+    public func info(_ message: Logger.Message){
         self.logger.info(message)
     }
     
-    internal func notice(_ message: Logger.Message){
+    public func notice(_ message: Logger.Message){
         self.logger.notice(message)
     }
     
-    internal func warning(_ message: Logger.Message){
+    public func warning(_ message: Logger.Message){
         self.logger.warning(message)
     }
 
-    internal func error(_ message: Logger.Message){
+    public func error(_ message: Logger.Message){
         self.logger.error(message)
     }
     
-    internal func critical(_ message: Logger.Message){
+    public func critical(_ message: Logger.Message){
         self.logger.critical(message)
     }
 }
