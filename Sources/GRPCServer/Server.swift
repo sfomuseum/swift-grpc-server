@@ -37,10 +37,11 @@ public class GRPCServer {
             
             builder = Server.insecure(group: group)
         }
-        
+                
         let server = try await builder
             .withServiceProviders(providers)
             .withLogger(self.options.logger)
+            .withMaximumReceiveMessageLength(options.max_receive_message_length)
             .bind(host: self.options.host, port: self.options.port)
             .get()
         
