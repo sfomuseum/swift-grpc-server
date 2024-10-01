@@ -20,7 +20,7 @@ public class GRPCServer {
         let group = MultiThreadedEventLoopGroup(numberOfThreads: self.options.threads)
         
         defer {
-            try! group.syncShutdownGracefully()
+            try! group.shutdownGracefully()
         }
         
         var builder: Server.Builder
