@@ -1,12 +1,12 @@
 import Logging
-import GRPC
+import GRPCCore
 import NIOCore
 import NIOPosix
 import NIOSSL
 import Logging
 import Foundation
 
-@available(macOS 14.0, iOS 17.0, tvOS 17.0, *)
+@available(macOS 15.0, iOS 17.0, tvOS 17.0, *)
 public class GRPCServer {
     
     internal var options: GRPCServerOptions
