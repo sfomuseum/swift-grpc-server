@@ -1,12 +1,11 @@
 import Logging
-import GRPCCore
-import NIOCore
-import NIOPosix
-import NIOSSL
-import Logging
 import Foundation
 
-@available(macOS 15.0, iOS 17.0, tvOS 17.0, *)
+import GRPCCore
+import GRPCNIOTransportHTTP2
+import GRPCProtobuf
+
+@available(macOS 15.0, *)
 public class GRPCServer {
     
     internal var options: GRPCServerOptions
@@ -15,40 +14,21 @@ public class GRPCServer {
         self.options = opts
     }
     
-    public func Run(_ providers: [CallHandlerProvider]) async throws {
+    public func Run(_ services: [GRPCCore.RegistrableRPCService ]) async throws {
+                        
+        let transport = HTTP2ServerTransport.Posix(
+            address: .ipv4(host: self.options.host, port: self.options.port),
+            transportSecurity: .plaintext,
+        )
         
-        let group = MultiThreadedEventLoopGroup(numberOfThreads: self.options.threads)
-        
-        defer {
-            try! group.syncShutdownGracefully()
-        }
-        
-        var builder: Server.Builder
-        
-        if self.options.tls_certificate != nil && self.options.tls_key != nil {
-            
-            let cert = try NIOSSLCertificate(file: self.options.tls_certificate!, format: .pem)
-            let key = try NIOSSLPrivateKey(file: self.options.tls_key!, format: .pem)
-            
-            // 'secure(group:certificateChain:privateKey:)' is deprecated: Use one of 'usingTLSBackedByNIOSSL(on:certificateChain:privateKey:)', 'usingTLSBackedByNetworkFramework(on:with:)' or 'usingTLS(with:on:)'
-            
-            builder = Server.secure(group: group, certificateChain:[cert], privateKey: key)
-        } else {
-            
-            builder = Server.insecure(group: group)
-        }
+        let server = GRPCCore.GRPCServer(transport: transport, services: services)
                 
-        let server = try await builder
-            .withServiceProviders(providers)
-            .withLogger(self.options.logger)
-            .withMaximumReceiveMessageLength(options.max_receive_message_length)
-            .bind(host: self.options.host, port: self.options.port)
-            .get()
-        
-        self.options.logger.info("server started on port \(server.channel.localAddress!.port!)")
-        
-        // Wait on the server's `onClose` future to stop the program from exiting.
-        try await server.onClose.get()
+        try await withThrowingDiscardingTaskGroup { group in
+            // Why does this time out?
+            // let address = try await transport.listeningAddress
+            self.options.logger.info("listening for requests on \(self.options.host):\(self.options.port)")
+            group.addTask { try await server.serve() }
+        }
     }
     
 }

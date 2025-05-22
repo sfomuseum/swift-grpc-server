@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "swift-grpc-server",
+    platforms: [.macOS("15.0")],
     products: [
         .library(
             name: "GRPCServer",
@@ -14,8 +15,8 @@ let package = Package(
             targets: ["GRPCServerLogger"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/grpc/grpc-swift.git", from: "2.0.0"),
-        .package(url: "https://github.com/grpc/grpc-swift-nio-transport.git", from: "1.0.0"),
+        .package(url: "https://github.com/grpc/grpc-swift.git", from: "2.2.1"),
+        .package(url: "https://github.com/grpc/grpc-swift-nio-transport.git", from: "1.2.1"),
         .package(url: "https://github.com/grpc/grpc-swift-protobuf.git", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.6.3"),
     ],
