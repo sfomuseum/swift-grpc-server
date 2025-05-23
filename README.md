@@ -2,6 +2,12 @@
 
 Opinionated Swift package for running simple gRPC servers with optional TLS support.
 
+## Important
+
+This package targets version `1.x` of the [grpc/grpc-swift](https://github.com/grpc/grpc-swift) libraries which have been updated to a backwards-incompatible version 2.x.
+
+I have not decided if it's worth updating this package (to `grpc-swift` v2.x) yet.
+
 ## Example
 
 ```
